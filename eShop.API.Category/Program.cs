@@ -50,6 +50,7 @@ void RegisterServices()
 void RegisterEndpoints (WebApplication app)
 {
     app.AddEndpoint<Category,CategoryPostDTO, CategoryPutDTO, CategoryGetDTO>();
+    
 }
 void ConfigureAutoMapper()
 {
