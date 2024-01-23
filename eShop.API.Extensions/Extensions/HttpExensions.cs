@@ -20,19 +20,20 @@ public static class HttpExtensions
         app.MapPost($"/api/{node}s", HttpPostAsync<TEntity, TPostDto>);
         app.MapPut($"/api/{node}s/" + "{id}", HttpPutAsync<TEntity, TPutDto>);
         app.MapDelete($"/api/{node}s/" + "{id}", HttpDeleteAsync<TEntity>);
+
     }
 
-    public static void AddEndpoint<TEntity, TPostDto, TDeleteDto>(this WebApplication app)
-     where TEntity : class where TPostDto : class where TDeleteDto : class
-    {
+    public static void AddEndpoint<TEntity, TDto>(this WebApplication app)
+     where TEntity : class where TDto : class
+    { 
         var node = typeof(TEntity).Name.ToLower();
-        app.MapPost($"/api/{node}s", HttpPostReferenceAsync<TEntity, TPostDto>);
+        app.MapPost($"/api/{node}s", HttpPostReferenceAsync<TEntity, TDto>);
 
-        app.MapDelete($"/api/{node}s", async (IDbService db, [FromBody] TDeleteDto dto) =>
+        app.MapDelete($"/api/{node}s", async (IDbService db, [FromBody] TDto dto) =>
         {
             try
             {
-                if (!db.Delete<TEntity, TDeleteDto>(dto)) return Results.NotFound();
+                if (!db.Delete<TEntity, TDto>(dto)) return Results.NotFound();
 
                 if (await db.SaveChangesAsync()) return Results.NoContent();
             }
@@ -46,7 +47,7 @@ public static class HttpExtensions
 
     public static async Task<IResult> HttpSingleAsync<TEntity, TDto>(this IDbService db, int id)
     where TEntity : class, IEntity where TDto : class
-    {
+    {   // using of id for each category , it's shows just one category . ex. id = 1 is Men , id=2 Women , id = 3 Kids 
         var result = await db.SingleAsync<TEntity, TDto>(id);
         if (result is null) return Results.NotFound();
         return Results.Ok(result);
@@ -106,7 +107,7 @@ public static class HttpExtensions
     {
         try
         {
-            var entity = await db.AddAsync<TEntity, TPostDto>(dto);
+            var entity = await db.AddAsync<TEntity, TPostDto>(dto); // add extra categories 
             if (await db.SaveChangesAsync())
             {
                 var node = typeof(TEntity).Name.ToLower();
@@ -119,4 +120,5 @@ public static class HttpExtensions
 
         return Results.BadRequest($"Couldn't add the {typeof(TEntity).Name} entity.");
     }
+    
 }
