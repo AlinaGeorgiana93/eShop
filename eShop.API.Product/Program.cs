@@ -1,16 +1,8 @@
 using eShop.Data.Context;
-using Microsoft.EntityFrameworkCore;
-using eShop.Data;
-using eShop.Data.Entities;
-using Microsoft.AspNetCore;
-using Microsoft.Extensions;
-using Microsoft.AspNetCore.Builder;
-using eShop.API.Extensions;
-using eShop.API.DTO;
 using eShop.Data.Services;
-
-
-
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using eShop.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +16,7 @@ builder.Services.AddDbContext<EShopContext>(
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("EShopConnection")));
 
-RegisterServices();
+RegisterServices((builder.Services));
 
 var app = builder.Build();
 
@@ -38,29 +30,25 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-RegisterEndpoints(app);
+
+
 app.Run();
 app.UseCors("Policy");
-
-void RegisterServices()
+void RegisterServices(IServiceCollection services)
 {
     ConfigureAutoMapper();
-    builder.Services.AddScoped<IDbService, CategoryDbService>();
+    services.AddScoped<IDbService, ProductDbService>();
 }
-void RegisterEndpoints (WebApplication app)
-{
-    //app.AddEndpoint<Category,CategoryPostDTO, CategoryPutDTO, CategoryGetDTO>();
-    app.AddEndpoint<ProductCategory, ProductCategoryDTO>();
-}
+
 void ConfigureAutoMapper()
 {
     var config = new MapperConfiguration(cfg =>
     {
-        cfg.CreateMap<Category, CategoryPostDTO>().ReverseMap();
-        cfg.CreateMap<Category, CategoryPutDTO>().ReverseMap();
-        cfg.CreateMap<Category, CategoryGetDTO>().ReverseMap();
-        cfg.CreateMap<Category, CategorySmallGetDTO>().ReverseMap();
-        cfg.CreateMap<ProductCategory, ProductCategoryDTO>().ReverseMap();
+       // cfg.CreateMap<Category, CategoryPostDTO>().ReverseMap();
+       // cfg.CreateMap<Category, CategoryPutDTO>().ReverseMap();
+       // cfg.CreateMap<Category, CategoryGetDTO>().ReverseMap();
+       //cfg.CreateMap<Category, CategorySmallGetDTO>().ReverseMap();
+       //cfg.CreateMap<ProductCategory, ProductCategoryDTO>().ReverseMap();
 
         //cfg.CreateMap<Filter, FilterGetDTO>().ReverseMap();
         //cfg.CreateMap<Size, OptionDTO>().ReverseMap();
@@ -69,4 +57,3 @@ void ConfigureAutoMapper()
     var mapper = config.CreateMapper();
     builder.Services.AddSingleton(mapper);
 }
-

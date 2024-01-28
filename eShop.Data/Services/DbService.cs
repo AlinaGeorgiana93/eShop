@@ -72,7 +72,7 @@ public class DbService : IDbService
 
         return true;
     }
-    
+
     public async Task<bool> SaveChangesAsync() => await _db.SaveChangesAsync() >= 0;
     public void IncludeNavigationsFor<TEntity>()
         where TEntity : class
@@ -91,7 +91,7 @@ public class DbService : IDbService
             foreach (var name in navigationPropertyNames)
                 _db.Set<TEntity>().Include(name).Load();
     }
-    public bool Delete <TEntity, TDto>(TDto dto)
+    public bool Delete<TEntity, TDto>(TDto dto)
         where TEntity : class where TDto : class
     {
         try
@@ -106,4 +106,5 @@ public class DbService : IDbService
             return false;
         }
     }
+    
 }
