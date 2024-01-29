@@ -1,17 +1,15 @@
-﻿using eShop.Data.Shared.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Builder;
-using eShop.Data.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace eShop.API.Extensions.Extensions;
 
-
-namespace eShop.API.Extensions.Extensions;
-
-
+//1.Klassen måste vara publik och statisk
+//2. Metoden måste vara publik statik 
+//3. Första parametern måste vara deklarerad som this för att den ska kunna arbeta
+//på objekt. Den är har datatypen av den objektstyp vi vill anropa metoden på. 
 
 public static class HttpExtensions
 {
-    public static void AddEndpoint<TEntity, TPostDto, TPutDto, TGetDto>(this WebApplication app)
+    //AddEndPoint lägger till/registrerar metoderna så vi kan anropa de.
+    //När gränssnittet anropar APIet ska den kunna köra dessa metoder.
+    public static void AddEndpoint<TEntity, TPostDto, TPutDto, TGetDto>(this WebApplication app)       
    where TEntity : class, IEntity where TPostDto : class where TPutDto : class where TGetDto : class
     {
         var node = typeof(TEntity).Name.ToLower();

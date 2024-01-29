@@ -11,7 +11,7 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20240109122824_Initial")]
+    [Migration("20240124221656_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace eShop.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -91,7 +91,10 @@ namespace eShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SortBy")
+                    b.Property<int>("OptionType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

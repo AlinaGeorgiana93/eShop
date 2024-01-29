@@ -1,5 +1,4 @@
-﻿
-namespace eShop.Data.Services;
+﻿namespace eShop.Data.Services;
 
 public interface IDbService
 {

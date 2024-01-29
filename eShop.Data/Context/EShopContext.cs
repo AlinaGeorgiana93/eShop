@@ -1,9 +1,9 @@
-﻿using eShop.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿namespace eShop.Data.Context;
 
-namespace eShop.Data.Context;
-
-public class EShopContext (DbContextOptions<EShopContext> builder) : DbContext(builder)
+public class EShopContext (DbContextOptions<EShopContext> builder) : DbContext(builder) //ett modernt sätt att använda en konstruktor(ctor)
+                                                                                        //genom "use primary constructor". Den skickar
+                                                                                        //builder till DbContext så den kan hantera och
+                                                                                        //använda konfigurationen som EntityFramWork behöver.
 {
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Filter> Filters => Set<Filter>();
