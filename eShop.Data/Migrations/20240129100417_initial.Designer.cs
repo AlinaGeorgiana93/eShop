@@ -11,15 +11,15 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20240109122824_Initial")]
-    partial class Initial
+    [Migration("20240129100417_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -36,7 +36,7 @@ namespace eShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OptionType")
+                    b.Property<int?>("OptionType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -67,11 +67,19 @@ namespace eShop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BkColorHex")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ColorHex")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ColorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OptionType")
+                    b.Property<int?>("OptionType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -107,6 +115,10 @@ namespace eShop.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PictureUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -170,7 +182,7 @@ namespace eShop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("OptionType")
+                    b.Property<int?>("OptionType")
                         .HasColumnType("int");
 
                     b.Property<string>("SizeName")
