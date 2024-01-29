@@ -13,7 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eShop.Data\eShop.Data.csproj" />
+	  <ProjectReference Include="..\eShop.API.DTO\eShop.API.DTO.csproj" />
+	  <ProjectReference Include="..\eShop.API.Extensions\eShop.API.Extensions.csproj" />
+	  <ProjectReference Include="..\eShop.Data.Shared\eShop.Data.Shared.csproj" />
+	  <ProjectReference Include="..\eShop.Data\eShop.Data.csproj" />
   </ItemGroup>
 
 </Project>

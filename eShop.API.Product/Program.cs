@@ -3,7 +3,8 @@ using eShop.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using eShop.Data.Entities;
-
+using eShop.API.DTO.DTOs;
+using eShop.API.Extensions.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +41,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-
+RegisterEndpoints();
 
 
 app.UseCors("Policy");
@@ -50,15 +51,18 @@ void RegisterServices(IServiceCollection services)
     ConfigureAutoMapper();
     services.AddScoped<IDbService, ProductDbService>();
 }
-void RegisterEndpoints(WebApplication app)
+void RegisterEndpoints()
 {
-   /* app.AddEndpoint<Product, ProductPostDTO, ProductPutDTO, ProductGetDTO>();
+    app.AddEndpoint<Product, ProductPostDTO, ProductPutDTO, ProductGetDTO>();
     app.AddEndpoint<Size, SizePostDTO, SizePutDTO, SizeGetDTO>();
     app.AddEndpoint<Color, ColorPostDTO, ColorPutDTO, ColorGetDTO>();
-    app.AddEndpoint<ProductCategory, ProductCategoryPostDTO, ProductCategoryDeleteDTO>();
-    app.AddEndpoint<ProductSize, ProductSizePostDTO, ProductSizeDeleteDTO>();
-    app.AddEndpoint<ProductColor, ProductColorPostDTO, ProductColorDeleteDTO>();
-    app.MapGet($"/api/productsbycategory/" + "{categoryId}", async (IDbService db, int categoryId) =>
+
+    app.AddEndpoint<ProductCategory, ProductCategoryPostDTO>();
+    app.AddEndpoint<ProductSize, ProductSizePostDTO, ProductSizeGetDTO>();
+    app.AddEndpoint<ProductColor,  ProductColorPostDTO, ProductColorGetDTO>();
+
+    /*app.MapGet($"/api/productsbycategory/" + "{categoryId}", async (IDbService db, int categoryId) =>
+
     {
         try
         {
@@ -69,15 +73,18 @@ void RegisterEndpoints(WebApplication app)
         }
 
         return Results.BadRequest($"Couldn't get the requested products of type {typeof(Product).Name}.");
+    
     });
-   */
+    */
+    
+   
 }
 
 void ConfigureAutoMapper()
 {
     var config = new MapperConfiguration(cfg =>
     {
-       /* cfg.CreateMap<Product, ProductPostDTO>().ReverseMap();
+        cfg.CreateMap<Product, ProductPostDTO>().ReverseMap();
         cfg.CreateMap<Product, ProductPutDTO>().ReverseMap();
         cfg.CreateMap<Product, ProductGetDTO>().ReverseMap();
         cfg.CreateMap<Size, SizePostDTO>().ReverseMap();
@@ -92,7 +99,7 @@ void ConfigureAutoMapper()
         cfg.CreateMap<ProductSize, ProductSizeDeleteDTO>().ReverseMap();
         cfg.CreateMap<ProductColor, ProductColorPostDTO>().ReverseMap();
         cfg.CreateMap<ProductColor, ProductColorDeleteDTO>().ReverseMap();
-       */
+       
     });
     var mapper = config.CreateMapper();
     builder.Services.AddSingleton(mapper);
