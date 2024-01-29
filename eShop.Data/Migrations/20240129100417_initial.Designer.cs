@@ -11,13 +11,13 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-<<<<<<<< HEAD:eShop.Data/Migrations/20240124221656_Initial.Designer.cs
+
     [Migration("20240124221656_Initial")]
-    partial class Initial
-========
+    partial class Initial;
+
     [Migration("20240129100417_initial")]
     partial class initial
->>>>>>>> 973f5162135788ae25d57d27fee91591d52cd574:eShop.Data/Migrations/20240129100417_initial.Designer.cs
+
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

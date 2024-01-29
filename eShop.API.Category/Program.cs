@@ -1,4 +1,6 @@
 
+using eShop.API.DTO.DTOs;
+
 var builder = WebApplication.CreateBuilder(args); //Rad 2-7 startar vårat API och registrera swagger så man får tillgång tillhemsidan att testa.
 
 // Add services to the container.

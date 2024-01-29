@@ -1,8 +1,6 @@
-using eShop.Data.Context;
-using eShop.Data.Services;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using eShop.Data.Entities;
+
+
+using eShop.API.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,11 +42,22 @@ void ConfigureAutoMapper()
 {
     var config = new MapperConfiguration(cfg =>
     {
-       // cfg.CreateMap<Category, CategoryPostDTO>().ReverseMap();
-       // cfg.CreateMap<Category, CategoryPutDTO>().ReverseMap();
-       // cfg.CreateMap<Category, CategoryGetDTO>().ReverseMap();
-       //cfg.CreateMap<Category, CategorySmallGetDTO>().ReverseMap();
-       //cfg.CreateMap<ProductCategory, ProductCategoryDTO>().ReverseMap();
+        cfg.CreateMap<Product, ProductPostDTO>().ReverseMap();
+        cfg.CreateMap<Product, ProductPutDTO>().ReverseMap();
+        cfg.CreateMap<Product, ProductGetDTO>().ReverseMap();
+
+        cfg.CreateMap<ProductColor, ProductColorDTO>().ReverseMap();
+
+        cfg.CreateMap<Color, ColorPostDTO>().ReverseMap();
+        cfg.CreateMap<Color, ColorPutDTO>().ReverseMap();
+        cfg.CreateMap<Color, ColorGetDTO>().ReverseMap();
+
+        cfg.CreateMap<ProductSize, ProductSizeDTO>().ReverseMap();
+
+        cfg.CreateMap<Size, SizePostDTO>().ReverseMap();
+        cfg.CreateMap<Size, SizePutDTO>().ReverseMap();
+        cfg.CreateMap<Size, SizeGetDTO>().ReverseMap();
+
 
         //cfg.CreateMap<Filter, FilterGetDTO>().ReverseMap();
         //cfg.CreateMap<Size, OptionDTO>().ReverseMap();

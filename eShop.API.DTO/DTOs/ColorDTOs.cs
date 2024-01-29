@@ -1,5 +1,4 @@
-﻿using eShop.Data.Entities;
-
+﻿
 namespace eShop.API.DTO;
 
 public class ColorPostDTO
