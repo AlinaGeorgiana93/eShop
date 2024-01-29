@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using eShop.Data.Entities;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +18,14 @@ builder.Services.AddDbContext<EShopContext>(
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("EShopConnection")));
 
+builder.Services.AddCors(policy =>
+{
+    policy.AddPolicy("CorsAllAccessPolicy", opt =>
+        opt.AllowAnyOrigin()
+           .AllowAnyHeader()
+           .AllowAnyMethod()
+    );
+});
 RegisterServices((builder.Services));
 
 var app = builder.Build();
@@ -32,27 +42,57 @@ app.UseHttpsRedirection();
 
 
 
-app.Run();
+
 app.UseCors("Policy");
+app.Run();
 void RegisterServices(IServiceCollection services)
 {
     ConfigureAutoMapper();
     services.AddScoped<IDbService, ProductDbService>();
+}
+void RegisterEndpoints(WebApplication app)
+{
+   /* app.AddEndpoint<Product, ProductPostDTO, ProductPutDTO, ProductGetDTO>();
+    app.AddEndpoint<Size, SizePostDTO, SizePutDTO, SizeGetDTO>();
+    app.AddEndpoint<Color, ColorPostDTO, ColorPutDTO, ColorGetDTO>();
+    app.AddEndpoint<ProductCategory, ProductCategoryPostDTO, ProductCategoryDeleteDTO>();
+    app.AddEndpoint<ProductSize, ProductSizePostDTO, ProductSizeDeleteDTO>();
+    app.AddEndpoint<ProductColor, ProductColorPostDTO, ProductColorDeleteDTO>();
+    app.MapGet($"/api/productsbycategory/" + "{categoryId}", async (IDbService db, int categoryId) =>
+    {
+        try
+        {
+            return Results.Ok(await ((ProductDbService)db).GetProductsByCategoryAsync(categoryId));
+        }
+        catch
+        {
+        }
+
+        return Results.BadRequest($"Couldn't get the requested products of type {typeof(Product).Name}.");
+    });
+   */
 }
 
 void ConfigureAutoMapper()
 {
     var config = new MapperConfiguration(cfg =>
     {
-       // cfg.CreateMap<Category, CategoryPostDTO>().ReverseMap();
-       // cfg.CreateMap<Category, CategoryPutDTO>().ReverseMap();
-       // cfg.CreateMap<Category, CategoryGetDTO>().ReverseMap();
-       //cfg.CreateMap<Category, CategorySmallGetDTO>().ReverseMap();
-       //cfg.CreateMap<ProductCategory, ProductCategoryDTO>().ReverseMap();
-
-        //cfg.CreateMap<Filter, FilterGetDTO>().ReverseMap();
-        //cfg.CreateMap<Size, OptionDTO>().ReverseMap();
-        //cfg.CreateMap<Color, OptionDTO>().ReverseMap();
+       /* cfg.CreateMap<Product, ProductPostDTO>().ReverseMap();
+        cfg.CreateMap<Product, ProductPutDTO>().ReverseMap();
+        cfg.CreateMap<Product, ProductGetDTO>().ReverseMap();
+        cfg.CreateMap<Size, SizePostDTO>().ReverseMap();
+        cfg.CreateMap<Size, SizePutDTO>().ReverseMap();
+        cfg.CreateMap<Size, SizeGetDTO>().ReverseMap();
+        cfg.CreateMap<Color, ColorPostDTO>().ReverseMap();
+        cfg.CreateMap<Color, ColorPutDTO>().ReverseMap();
+        cfg.CreateMap<Color, ColorGetDTO>().ReverseMap();
+        cfg.CreateMap<ProductCategory, ProductCategoryPostDTO>().ReverseMap();
+        cfg.CreateMap<ProductCategory, ProductCategoryDeleteDTO>().ReverseMap();
+        cfg.CreateMap<ProductSize, ProductSizePostDTO>().ReverseMap();
+        cfg.CreateMap<ProductSize, ProductSizeDeleteDTO>().ReverseMap();
+        cfg.CreateMap<ProductColor, ProductColorPostDTO>().ReverseMap();
+        cfg.CreateMap<ProductColor, ProductColorDeleteDTO>().ReverseMap();
+       */
     });
     var mapper = config.CreateMapper();
     builder.Services.AddSingleton(mapper);
