@@ -96,7 +96,10 @@ namespace eShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SortBy")
+                    b.Property<int>("OptionType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

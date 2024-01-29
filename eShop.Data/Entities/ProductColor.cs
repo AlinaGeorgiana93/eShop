@@ -1,6 +1,4 @@
-﻿
-
-namespace eShop.Data.Entities;
+﻿namespace eShop.Data.Entities;
 
 public class ProductColor
 {

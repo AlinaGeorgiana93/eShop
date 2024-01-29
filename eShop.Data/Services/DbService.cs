@@ -1,13 +1,9 @@
-﻿
-using eShop.Data.Context;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace eShop.Data.Services;
 
-public class DbService : IDbService
+public class DbService : IDbService //den här klassen ska implementera interfacet.
+                                    //De andra klasserna ärver från DbService och implementerar interfacet via arvet.
 {
     private readonly EShopContext _db;
     private readonly IMapper _mapper;
