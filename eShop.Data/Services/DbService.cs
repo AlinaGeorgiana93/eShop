@@ -13,7 +13,8 @@ public class DbService : IDbService //den här klassen ska implementera interfac
         _db = db;
         _mapper = mapper;
     }
-    public virtual async Task<TDto> SingleAsync<TEntity, TDto>(int id) where TEntity : class, IEntity where TDto : class
+    public virtual async Task<TDto> SingleAsync<TEntity, TDto>(int id)
+        where TEntity : class, IEntity where TDto : class
     {
         var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
         return _mapper.Map<TDto>(entity);
@@ -39,20 +40,23 @@ public class DbService : IDbService //den här klassen ska implementera interfac
     {
         return _mapper.Map<List<TDto>>(entities);
     }
-    public async Task<TEntity> AddAsync<TEntity, TDto>(TDto dto) where TEntity : class where TDto : class
+    public async Task<TEntity> AddAsync<TEntity, TDto>(TDto dto)
+        where TEntity : class where TDto : class
     {
         var entity = _mapper.Map<TEntity>(dto);
         await _db.Set<TEntity>().AddAsync(entity);
         return entity;
     }
-    public void Update<TEntity, TDto>(TDto dto) where TEntity : class, IEntity where TDto : class
+    public void Update<TEntity, TDto>(TDto dto)
+        where TEntity : class, IEntity where TDto : class
     {
         // Note that this method isn't asynchronous because Update modifies
         // an already exisiting object in memory, which is very fast.
         var entity = _mapper.Map<TEntity>(dto);
         _db.Set<TEntity>().Update(entity);
     }
-    public async Task<bool> DeleteAsync<TEntity>(int id) where TEntity : class, IEntity
+    public async Task<bool> DeleteAsync<TEntity>(int id)
+        where TEntity : class, IEntity
     {
         try
         {
@@ -64,20 +68,10 @@ public class DbService : IDbService //den här klassen ska implementera interfac
 
         return true;
     }
-    public bool Delete<TEntity, TDto>(TDto dto) where TEntity : class where TDto : class
-    {
-        try
-        {
-            var entity = _mapper.Map<TEntity>(dto);
-            if (entity is null) return false;
-            _db.Remove(entity);
-        }
-        catch { return false; }
 
-        return true;
-    }
     public async Task<bool> SaveChangesAsync() => await _db.SaveChangesAsync() >= 0;
-    public void IncludeNavigationsFor<TEntity>() where TEntity : class
+    public void IncludeNavigationsFor<TEntity>()
+        where TEntity : class
     {
         // Skip Navigation Properties are used for many-to-many
         // relationsips (List or ICollection) and Navigation Properties
@@ -93,5 +87,20 @@ public class DbService : IDbService //den här klassen ska implementera interfac
             foreach (var name in navigationPropertyNames)
                 _db.Set<TEntity>().Include(name).Load();
     }
-
+    public bool Delete<TEntity, TDto>(TDto dto)
+        where TEntity : class where TDto : class
+    {
+        try
+        {
+            var entity = _mapper.Map<TEntity>(dto);
+            if (entity is null) return false;
+            _db.Remove(entity);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
 }
