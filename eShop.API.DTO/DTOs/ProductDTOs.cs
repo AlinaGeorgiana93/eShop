@@ -4,6 +4,7 @@ public class ProductPostDTO
 {
     public string ProductName { get; set; } = string.Empty;
     public string PictureUrl { get; set; } = string.Empty;
+    public int Price { get; set; } = 0; 
 }
 public class ProductPutDTO : ProductPostDTO
 {

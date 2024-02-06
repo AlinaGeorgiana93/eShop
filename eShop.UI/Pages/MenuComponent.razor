@@ -1,0 +1,30 @@
+﻿<nav class="navbar navbar-expand-lg bg-body-tertiary d-flex justify-content-center">
+    <div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>  <!--navbar-expand tillsammans med button gör hamburgarmeny, kopplade till varandra-->
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">   <!--Våran menyalternativ. En div som talar om den kan kollappsas. hänvisar till navbarNavDropdown så den vet vilken element/meny den ska arbeta emot, styr om den ska visas eller inte-->
+            <ul class="navbar-nav">     <!--Vår ul lista som innehåller nav itemns, talar om att den ska stylas som om den ligger i nav-->
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>  <!--Varje list item är ett alternativ i menyn-->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a> <!--Dom är alla a taggar så man kan hoppa till andra sidor-->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown link
+                    </a>
+                    <ul class="dropdown-menu"> <!--Egen ny lista-->
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

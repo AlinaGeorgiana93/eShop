@@ -41,7 +41,6 @@ header div img {
     margin-left: -70px;
 }
 
-}
 
 .logo {
     height: 50px;
@@ -76,3 +75,96 @@ body {
     background-size: cover;
     background-position: center;
 }
+
+.carousel slide {
+    width: 50%;
+}
+
+.product-card {  /*Här får vi inställning för alla korten, alla som ligger mellan första och sista får denna inställning*/
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+.product-card-list:first-child { /*Här överstrider vi marginalen på vänster på första*/
+    margin-left: 0rem;
+    
+}
+
+.product-card-list:last-child {  /*Här överstrider vi marginalen på vänster på andra*/
+    margin-right: 0rem;
+    }
+
+@media screen and (max-width: 470px) { /*Här överstrider vi marginalen på vänster på andra*/
+    #aside-menu, viewpoint {
+        height: auto !important;
+        flex-direction: column;
+    }
+}
+
+/*
+
+img.img-fluid {   //Svagaste knytning, ligger direkt på elementet i ett klassatribut             
+    height: 500px!important;
+}
+    
+img {   //svagaste länken´, den näst svagaste styrning/bindning, svagast är *      
+    height: 500px!important;
+}
+
+div img {   //någonstans inne i div, hela klassatributet
+    height: 500px;
+}
+
+#product-image-1 {   //starkaste knytningen
+    height: 500px;
+}
+
+.bi .bi-cart {    //ett mellanslag mellan .bi .bi-cart innebär att bi-cart ska ligga 
+                  //inne i ett element som har den klassen på sig. Ett underliggande element/child element.
+
+ font-size: 8.5 !important;
+}
+
+h1 i {}    //alla (i)-taggar inne i h1 ska stylas
+
+i.bi.bi-cart {    //Här säger vi, på en i-tagg ska det finnas en klass bi, och en ytterligare klass bi-cart. ( 2 B-kolumn, 1 C-kolumn.) Starkare än .bi.bi-cart.          
+    font-size: 8.5 !important;
+}
+
+header img {       //Styla alla bilder inne i header
+    height: 30px; 
+}
+
+header div img, .dropdown .btn, header button  {   //Styla alla bilder inne i header inne i en div/ Betyder både "header div img" och ".dropdown .btn" ska stylas, header button betyder att alla knappar som ligger i header ska ha en viss storlek.
+    height: 49px; 
+}
+
+//alternativ 2 av koden ovan fast med nav inställningar
+nav a img {   
+    height: 37px; 
+}
+
+.search-width {    //vill vi styla utan bootstrap kan vi göra en egen klass med en viss bredd och pixlar.
+    width: 45%;
+}
+
+#cart-button  {   //här konfiguerar vi bredden på Cart-ikonen //skapat ett id för Cart-knappen(#cart-button)
+    width: 49px;  //kommenteras bort ifall knappen är opassande. Stylas istället med nav
+}
+
+.dropdown .btn{   //specificierar vad vår dropdown ska ha för height. punkt står för en klass, ingen punkt är element. Btn står för button.
+    height: 49px;
+}
+
+.cart-count {
+    top: 0;
+    right: 0;
+    padding: 2px 6px;   //betyder runt hela 3 ovanför Cart-ikonen, 2px ändrar uppe och nere, 6px ändrar vänster höger
+    line-height: 1      //betyder height från mittlinje.
+    margin-top: -10px;  //3-ikonen hamnar lite utanför ovanför Cart-ikonen
+    margin-right: -8px; //3-ikonen hamnar lite till höger ovanför Cart-ikonen
+    font-size: 9pt //här ändringar vi fontstorlek på 3-ikonen
+}
+
+*/
+
