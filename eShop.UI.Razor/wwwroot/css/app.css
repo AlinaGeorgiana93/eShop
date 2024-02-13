@@ -1,4 +1,4 @@
-﻿﻿h1:focus {
+h1:focus {
     outline: none;
 }
 
@@ -30,50 +30,3 @@
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
-
-
-
-header div img {
-    height: 600px;
-    margin-top: -230px;
-    margin-right: -45px;
-    margin-left: -70px;
-}
-
-}
-
-.logo {
-    height: 50px;
-    width: auto;
-}
-
-.input-group,
-.btn {
-    height: 50px;
-}
-
-.search-width {
-    width: 25%;
-}
-
-#cart-button {
-    width: 49px;
-    height: 49px;
-}
-
-.cart-count {
-    top: 0;
-    right: 0;
-    padding: 2px 6px;
-    line-height: 1;
-    margin-top: -9px;
-    margin-right: -8px;
-    font-size: 9pt;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
-}
-
-body {
-    background-image: url("Images/csspicture.png");
-    background-size: cover;
-    background-position: center;
-}
