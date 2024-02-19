@@ -1,15 +1,36 @@
 ﻿@using eShop.UI.Models.Link
 
-<article>
-    <div class="bg-success">@LinkGroup?.Name</div>
-    <div>
-        @foreach(var link in LinkGroup!.LinkOptions)
+ <!-- I LinkMainComponent får vi in information om Listgruppen på sidan av index 
+ så vi får in datat.Annars är den bara statisk och kan inte ändra information,-->
+
+<article> 
+    <div class="bg-primary text-white p-2"><strong>@LinkGroup?.Name</strong></div>        @* Sektion för vår rubrik i sidorutslistan, "bg-success"=färg för rubriken*@
+    <div class="d-flex flex-column">
+        @foreach(var link in LinkGroup!.LinkOptions)   
         {
-            <LinkComponent LinkOption="link"/>
+            <LinkComponent LinkOption="link" OnLinkClick="OnLinkPress"/>           @* (Vår Subscriber) Sektion för våra listor, foreachloopen länkar igenom LinkGroupens Options. 
+                                                                                    Här säger vi att vi vill skicka in en länkinformation till länkkomponenten 
+                                                                                    varje gång vi loopar. Vaje gång vi loopar får vi en option/länk ifrån 
+                                                                                    LinkGroupens OptionLista. Namnet LinkOption kommer från Parameternamnet 
+                                                                                    från property i LinkComponent. Namnen måste matcha! 
+                                                                                    Vi måste även lägga till OnLinkClick eftersom vi la eventet på LinkComponent
+                                                                                    OnlinkPress är en metod som OnLinkClick anropar*@
         }
     </div>
 </article>
 
 @code {
-    [Parameter] public LinkGroup? LinkGroup { get; set; }
+    [Parameter] public LinkGroup? LinkGroup { get; set; } //här lägger vi till en property för att vi ska kunna ta emot en parameter. 
+                                                          //Vi säger att vi ska kunna skicka ut denna property utifrån.
+                                                          //Via AsideComponent(LinkMainComponent) ska vi kunna skicka in gruppen. 
+                                                          //Det gör vi genom att säga Propertyn är en [Parameter].
+
+    [Parameter] public EventCallback<int> OnAsideCall { get; set; } //vi lägger till en parameter så vi kan anropa eventet från Aside. 
+                                                                    //<int> skickar in Id som kommer in till OnLinkPress,
+
+    void OnLinkPress(int id)
+    {
+        if (OnAsideCall.HasDelegate)       //Här triggar vi igång ett event så vi kan komma till vår Aside där vi kan uppdatera våran länkinformation
+            OnAsideCall.InvokeAsync(id);   //Vi har gått ifrån länken till LinkMainComponent, och ni vidare till Aside så vi har tillgång till hela sidofältet. Kontrollerar om vi har någon prenumerant på OnAsideCall och triggar igång ett event. skickar med id till Aside(OnAsideCallback)
+    }
 }

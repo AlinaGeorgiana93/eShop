@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eShop.API.DTO\eShop.API.DTO.csproj" />
     <ProjectReference Include="..\eShop.Data.Shared\eShop.Data.Shared.csproj" />
   </ItemGroup>
 

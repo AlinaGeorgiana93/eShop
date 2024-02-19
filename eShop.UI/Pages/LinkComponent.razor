@@ -1,21 +1,30 @@
-﻿@using eShop.UI.Models.Link
-
+﻿
+                                                @*LinkComponent Motsvarar en länk på sidorutslistan*@
 @if (LinkOption is not null)
 {
-    <button class="btn btn-link text-start text-decoration-none py-0 @(LinkOption.IsSelected ? "ps-0" : "ps-3")" @onclick="OnClick">
-        @if (LinkOption.IsSelected)
+    <button class="btn btn-link text-start text-decoration-none py-0 @(LinkOption!.IsSelected ? "ps-0" : "ps-3")" @onclick="OnClick">  <!--btn btn-link gör om knappen så den ser ut som en länk.
+                                                                                                                                       text-decoration-none tar bort understryckningen av länken
+                                                                                                                                       py-0 = ingen padding upp och ner. 
+                                                                                                                                       IsSelected säger att om den är markerad vill jag inte ha 
+                                                                                                                                       någon startPadding till vänster, Om den inte har den vill 
+                                                                                                                                       jag lägga till padding på den. Onclick är ett event är det 
+                                                                                                                                       som ska hända när det klickas på knappen.-->
+        @if (LinkOption.IsSelected) @*Här ser den ifall länken är markerad*@
         {
-            <i class="bi-caret-right"></i>
+            <i class="bi-caret-right"></i> @*lägger till ikonen som används och styrs*@
         }
-        @LinkOption?.Name
+        @LinkOption?.Name @* <Talar om namnet på länken>*@
     </button>
 }
 
 @code {
-    [Parameter] public LinkOption? LinkOption { get; set; }
+    [Parameter] public LinkOption? LinkOption { get; set; } //En parameter som tar emot en länk/Linkoption 
+    [Parameter] public EventCallback<int> OnLinkClick { get; set; } //(Vår Publisher) Datatyoen ÉventCallback låter subscribers prenumerera. Här gör vi det möjligt för LinkMainComponent att anropa den här. 
+                                                                    //Prenumerationen sker i huvudkomponenten/LinkMainComponent där vi skickar in en prenumeration. <int>= säger att den ska skicka en int (LinkOption.Id)
 
-    void OnClick()
+    void OnClick() // HÄr vill vi trigga ett event som heter EventCallback
     {
-        
+        if (OnLinkClick.HasDelegate && LinkOption is not null) //Här säger den att den åtminstånde ska ha en prenumerant och kollar att den inte är null 
+            OnLinkClick.InvokeAsync(LinkOption.Id);  // InvokeAsync är metoden som triggar igång ett event. När vi klickar på en länk triggar vi en Invoke till Callback parametern, skickar iväg id till LinkMainC.(OnlinkPress)
     }
 }

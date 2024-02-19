@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <ProjectReference Include="..\eShop.API.Category\eShop.API.Category.csproj" />
 	  <ProjectReference Include="..\eShop.API.DTO\eShop.API.DTO.csproj" />
 	  <ProjectReference Include="..\eShop.API.Extensions\eShop.API.Extensions.csproj" />
 	  <ProjectReference Include="..\eShop.Data.Shared\eShop.Data.Shared.csproj" />

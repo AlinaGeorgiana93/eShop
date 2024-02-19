@@ -17,12 +17,6 @@ public class DbService : IDbService //den här klassen ska implementera interfac
         _db = db;
         _mapper = mapper; //a.här sparar vi undan mapper i variabel _mapper som är tillgänglig i hela klassen...
     }
-    public virtual async Task<TDto> SingleAsync<TEntity, TDto>(int id)
-        where TEntity : class, IEntity where TDto : class
-    {
-        var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
-        return _mapper.Map<TDto>(entity); //a...så vi kan anropa Map-metoden.
-    }
 
     public virtual async Task<List<TDto>> GetAsync<TEntity, TDto>()
         where TEntity : class
@@ -39,17 +33,25 @@ public class DbService : IDbService //den här klassen ska implementera interfac
                                                   //"(entities)" = är vad vi vill konvertera från.
                                                   //"<List<TDto>>" = är vad vi vill konvertera till, en lista av DTOer
     }
-    public IQueryable<TEntity> GetAsync<TEntity>(
-        Expression<Func<TEntity, bool>> expression)
+    public IQueryable<TEntity> GetAsync<TEntity>( //En GetAsync metod som tar emot en entitet, och returnerar ut en entitet tillbaks. istället för DTO. IQueryable = det som vi hämtar ut är inte datat. Utan möjligheten att fortsätta bygga vidare på uttrycket som redan finns. Istället för att använda list där man hämtar datat direkt och gör något. 
+        Expression<Func<TEntity, bool>> expression) // Expression är ett sätt för oss att skicka in/ta emot LANDA uttryck med Id. Måste vara en funktion(Func), eftersom LANDA uttryck är en funktion. 
         where TEntity : class
     {
-        return _db.Set<TEntity>().Where(expression);
+        return _db.Set<TEntity>().Where(expression); //Hämta ifrån databasen i den entitet vi angivit. DÄr matchingen är det LANDA uttryck som kommer in(expression). På så sätt får vi ut de som matchar LANDA uttryck. (Deligate)
     }
-    public List<TDto> MapList<TEntity, TDto>(List<TEntity> entities)
+
+    public virtual async Task<TDto> SingleAsync<TEntity, TDto>(int id)
+        where TEntity : class, IEntity where TDto : class
+    {
+        var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
+        return _mapper.Map<TDto>(entity); //a...så vi kan anropa Map-metoden.
+    }
+
+    public List<TDto> MapList<TEntity, TDto>(List<TEntity> entities) //denna metod mappar entiteter med DTOer, en generisk metod
         where TEntity : class
         where TDto : class
     {
-        return _mapper.Map<List<TDto>>(entities);
+        return _mapper.Map<List<TDto>>(entities); 
     }
     public async Task<TEntity> AddAsync<TEntity, TDto>(TDto dto) //AddSync den ska ha en Entitet och DTO, och den tar emot
                                                                  //en DTO som kommer från användargränssnittet(t ex Swagger)
@@ -93,32 +95,32 @@ public class DbService : IDbService //den här klassen ska implementera interfac
     }
     public async Task<bool> SaveChangesAsync() => await _db.SaveChangesAsync() >= 0; //Den här koden kontrollerar om du är noll
                                                                                      //eller större har den lyckats göra det den ska utföra.
-    public void IncludeNavigationsFor<TEntity>()
-        where TEntity : class
+    public void IncludeNavigationsFor<TEntity>() //IncludeNavigationsFor tar entitet som vi vill koppla till en annan entitet. Vi talar om vilken entitet som vi vill hämta som relaterat data till våra produkter. talar om vilken extra data vi vill hämta för våra kopplingstabeller som vi lägger till i vår ProductGetDTO(API.DTO). Tar Color och Size Property fylls genom IncludeNavigationsFor. 
+        where TEntity : class                    //Via Reflection som Innebär att vi kan ta en generisk datatyp och titta vad den innehåller, så när vi skickar in color tex får vi in den som en entitet/klass. Den är som en ritning som vi kan gå in och titta på, men eftersom den är generisk måste vi läsa för att ta reda på vad den innehåller. Reflection tillåter oss att gå in och läsa va den har för propertys 
     {
         // Skip Navigation Properties are used for many-to-many = Skip Navigation Pr är en koppling där vi har en kopplingstabell mellan tex Category o Product.
         // relationsips (List or ICollection) and Navigation Properties
         // are used for one-to-many relationsips.
 
-        var propertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetNavigations().Select(e => e.Name);                //FindEntityType anropar vi på databasservicen för att hitta
+        var propertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetNavigations().Select(e => e.Name);                //FindEntityType anropar vi på databasservicen för att hitta       //här tar vi reda på vilka propertys finns det //GetNavigations betyder hämta navigerinspropertys som är ett till många.
                                                                                                                             //Entiteten i modellen (Där vi har alla våra DBsets så den vet
                                                                                                                             //hur den ska kommunicera med databasen). Model = hämta ritningen.
                                                                                                                             //? = om den inte är null ska vi gå vidare och anropa GetNavigations
                                                                                                                             //som hämtar navigeringsproperties där vi kan gå direkt mellan två Entiteter (One-To-Many)
                                                                                                                             //Select = låter oss hämta en delmängd av properties (Name hämtar namnet på navigeringsproperty)
 
-        var navigationPropertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetSkipNavigations().Select(e => e.Name); //Här vill vi hämta våra navigeringspropertynamn för SkipNavigation,
+        var navigationPropertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetSkipNavigations().Select(e => e.Name); //Här vill vi hämta våra navigeringspropertynamn för SkipNavigation,      //navigationPropertyNames betyder dom som är många till många.      //GetSkipNavigations betyder att det finns en kopplingstabell emellan, den skippar över en för att hämta datat.
                                                                                                                            //Vi vill hämta listorna som har kopplingstabeller.
                                                                                                                            //Här har vi enbart hämtat ut namnen på våra kopplingsproperties. Nästa steg är att använda namnen för att ladda datat 
         if (propertyNames is not null) //Om du inte är null kör vi en foreach och hämtar alla en-till-många-kopplingar
             foreach (var name in propertyNames)
-                _db.Set<TEntity>().Include(name).Load(); //Vi säger att Db.Set hämtar entiteten (Data.Context) 
+                _db.Set<TEntity>().Include(name).Load(); //Vi säger att Db.Set hämtar entiteten (Data.Context)  // här säger vi "använd dig utav entitetstypen som kommit in och inkludera dom som finns i name
                                                          //Include (extensionmetod) talar om namnet på den property vars värden vi vill ladda.
                                                          //"När du laddar produkten, ska du även ladda datat för (name) Color.
 
         if (navigationPropertyNames is not null) //samma fast för Skip Navigation Properties
             foreach (var name in navigationPropertyNames)
-                _db.Set<TEntity>().Include(name).Load();
+                _db.Set<TEntity>().Include(name).Load(); //samma som loopen ovan fast för många till många.
 
         //Reflection (typeof(TEntity) = när vi går in och läser i en typ/hämtar ritningen av en typ,
         //ser vad klassen innehåller för properties metoder och konstruktorer, Med andra ord hur den är uppbygd.

@@ -1,10 +1,10 @@
-﻿namespace eShop.API.DTO.DTOs;
+﻿namespace eShop.API.DTO;
 
 public class SizePostDTO
 {
     public string SizeName { get; set; } = string.Empty;
     public OptionType OptionType { get; set; }
-    public bool IsSelected { get; set; }
+    
 }
 
 public class SizePutDTO : SizePostDTO
@@ -14,4 +14,5 @@ public class SizePutDTO : SizePostDTO
 
 public class SizeGetDTO : SizePutDTO
 {
+    public bool IsSelected { get; set; }
 }

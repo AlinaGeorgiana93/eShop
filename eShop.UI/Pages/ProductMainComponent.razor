@@ -1,0 +1,88 @@
+﻿@using eShop.API.DTO
+@using eShop.API.DTO.DTOs
+
+
+﻿<section class="d-flex flex-wrap"> @* d-flex är per default flex-row så den visar produkter åt högersida. flex-wrap innebär att om produkterna inte får plats fortsätter dom inte åt höger utan innehållet börjar på en ny rad. *@
+    @foreach(var product in Service!.Products) @*för varje produkt vill vi skapa ett kort som koden nedan. Vi använder oss av ProductDTO*@
+    {
+        <div class="card mb-3" style="max-width: 540px;"> @*är själva diven runt omkring bilden och texten om produkten*@
+            <div class="row g-0"> @* vi använder ett row column system som använder flex i bakgrunden.*@
+                <div class="col-md-4"> @*siffran står för hur många columner vill jag den ska ta upp(12 är max)*@
+                    <img src="@product.PictureUrl" class="img-fluid rounded-start" alt="..."> @* i diven har lagt en bild som blir 4 columner.*@
+                </div>
+                <div class="col-md-8"> @*Näste div med text om produkt tar upp 8 columner av resterande 12.*@
+                    <div class="card-body">
+                        <h5 class="card-title">@product.ProductName</h5> @*Våran titel som blir vårat produktnamn*@
+                        <p class="card-text">@product.Description.Truncate(300)</p> @*Våran text som beskriver produkten, Truncate(300) skickar in X antal tecken.*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex card-footer bg-white g-0 justify-content-start"> @*skapar en card footer under bilden och texten. Vi kan ha färger och storlekar presenterade här, justify-content-start ser till att den börjar med innehållet från vänster sida.*@
+                @if (product.Sizes!.Count > 0) @*Vi säger om det inte finns några storlekar i den här listan, ska vi inte visa divven. Vi kontrollerar storleken och att det finns något i listan.*@
+                {
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        @foreach (var size in product.Sizes) @*Här gör vi en loop som stylar card footer så att storlek presenteras med genom knappar man kan trycka.*@
+                        {    
+                            <input type="radio" class="btn-check" name="btnradio"  
+                                id="size-@product.Id-@size.Id" 
+                                @onclick="() => OnSizeClick(product, size)"
+                                autocomplete="off" checked>
+
+                            <label class="btn btn-outline-primary btn-radio"
+                                   for="size-@product.Id-@size.Id">@size.SizeName.ToUpper()</label> @* Rad 24 och 25 ger oss ett unikt id för varje produkt och storlek. @size visar storleket från databasen. ToUpper gör så det visas med stora bokstäver.*@
+                        }
+                    </div>                    
+                }
+
+                @if (product.Colors!.Count > 0) @*Här hämtar vi färgerna vi vill presentera i card footern för produkterna.*@
+                {
+                    foreach(var color in product.Colors)
+                    {
+                        <div class="btn-group mx-2" role="group" aria-label="Basic radio toggle button group"> @*mx-2 - margin på båda sidor , ett mellanrum mellan size och color*@
+                            <input type="radio" class="btn-check" name="color-@product.Id-@color.Id" id="color-@product.Id-@color.Id"
+                                   autocomplete="off" @onclick="() => OnColorClick(product, color)"> @*En radiobutton som type, namnet och Id hämtar vi från ProductId, onclick är ett event som vi kommer använda, så när vi klickar på den måste vi göra något, vi vill välja en färg. talar om vi har valt en färg till våran service. Vi skapar ett Onclick-event för att kunna spara undan vilken av färgerna som är markerad. Vå får in både produkt och color eftersom produkt är där vi får Id.*@
+                            <label class="btn btn-sm btn-outline-primary" 
+                                   style="background-color:#@color.BGColor; color:#@(color.IsSelected ? color.TextColor : color.BGColor)"
+                               for="color-@product.Id-@color.Id"><i class="bi-check"></i></label> @*Vår label som vi har stylat med backgroundcolor via razor syntax, color.BGColor står för textfärgen. for="color betyder att den ska använda sig utav det unika Id så han vet vilken radiobutton label tillhör så den kan koppla ihop rätt Id.*@
+                        </div>                                                                    @* <i class="bi-check"></i> = är en ikon för checkboxen i våran label. Color kommer vi kunna bestämma i våran tabell i SQL genom  *@
+                    }                                                                             @*IsSelected behöver inte ligga på databasen, den kan istället ligga på DTO eftersom vi vill inte att den ska vara ikryssat nästa gång vi uppdaterar sidan. Den ska återgå till defaultinställning när vi startar den nästa dag. Vi hämtar datat från UI-service där vi sätter propertys för IsSelected*@
+                }
+
+                <button class="btn btn-sm btn-success" @onclick="AddToCart"><i class="bi-cart"></i></button> @*en shoppingcard knapp bredvid sixe och color. är utanför looparna ovan för annars får vi en knapp för varje kryssruta.*@
+            </div>
+
+        </div>
+    }
+</section>
+
+@code {
+    [CascadingParameter(Name = "Service")] public UIService? Service { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    void OnColorClick(ProductGetDTO product, ColorGetDTO color) //vi måste komma åt både produkten och färgen eftersom produkt är där vi får id och color för att få tillgång till färgen. 
+    {
+        product.Colors!.ForEach(c => c.IsSelected = false);  //här säger vi att vi vill nollställa alla true så att markeringen försvinner.
+        color.IsSelected = true; //den senaste markering gäller.
+    }
+
+    void OnSizeClick(ProductGetDTO product, SizeGetDTO size)
+    {
+        product.Sizes!.ForEach(s => s.IsSelected = false);
+        size.IsSelected = true;
+    }
+
+    /*void OnColorClick1(int productId, int colorId)
+    {
+        var product = Service!.Products.Single(p => p.Id == productId);
+        product.Colors!.ForEach(c => c.IsSelected = false);
+        var color = product.Colors.Single(c => c.Id == colorId);
+        color.IsSelected = true;
+    }*/
+
+
+    void AddToCart()
+    {
+        
+    }
+}

@@ -4,7 +4,8 @@ public class ProductPostDTO
 {
     public string ProductName { get; set; } = string.Empty;
     public string PictureUrl { get; set; } = string.Empty;
-    public int Price { get; set; } = 0; 
+    public int Price { get; set; } = 0;
+    public string Description { get; set; } = string.Empty;
 }
 public class ProductPutDTO : ProductPostDTO
 {
@@ -15,4 +16,5 @@ public class ProductGetDTO : ProductPutDTO
     public List<CategorySmallGetDTO>? Categories { get; set; }
     public List<SizeGetDTO>? Sizes { get; set; }
     public List<ColorGetDTO>? Colors { get; set; }
+
 }

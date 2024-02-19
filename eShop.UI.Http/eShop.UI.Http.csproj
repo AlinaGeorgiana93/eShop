@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eShop.Data.Shared\eShop.Data.Shared.csproj" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eShop.API.DTO\eShop.API.DTO.csproj" />
   </ItemGroup>
 
 </Project>

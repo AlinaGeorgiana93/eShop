@@ -5,9 +5,9 @@ public class ColorPostDTO
 {
     public string ColorName { get; set; } = string.Empty;
     public OptionType OptionType { get; set; }
-    public string? ColorHex { get; set; }
-    public string? BkColorHex { get; set; }
-    public bool IsSelected { get; set; }
+    public string? TextColor { get; set; } = string.Empty;
+    public string? BGColor { get; set; } = string.Empty;
+
 }
 
 public class ColorPutDTO : ColorPostDTO
@@ -17,5 +17,5 @@ public class ColorPutDTO : ColorPostDTO
 
 public class ColorGetDTO : ColorPutDTO
 {
-
+    public bool IsSelected { get; set; }
 }

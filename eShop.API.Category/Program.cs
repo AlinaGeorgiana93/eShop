@@ -1,4 +1,5 @@
 
+
 using eShop.API.DTO.DTOs;
 
 var builder = WebApplication.CreateBuilder(args); //Rad 2-7 startar vårat API och registrera swagger så man får tillgång tillhemsidan att testa.
@@ -67,7 +68,7 @@ app.UseCors("CorsAllAccessPolicy"); //Här används Cors som kontrollerar vem som 
 
 app.Run(); //Här startas APIet så vi kan anropa den 
 
-app.UseCors("Policy");
+
 void RegisterServices() //Här registreras en AutoMapper-Tjänst
 {
     ConfigureAutoMapper(); //detta är vår konfiguration för Automapper på rad 77.

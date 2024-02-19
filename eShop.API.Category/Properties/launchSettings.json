@@ -14,7 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5157",
+      "applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -24,7 +24,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger", //vår launch URL , developer läge startar swagger UI(sidan)
-      "applicationUrl": "https://localhost:7240;http://localhost:5157", //Vägen in till vår domän är 7240, den måste vara unik för varje applikation vi startar.
+      "applicationUrl": "https://localhost:5000;http://localhost:5001", //Vägen in till vår domän är 7240, den måste vara unik för varje applikation vi startar.
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

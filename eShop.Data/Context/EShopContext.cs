@@ -1,6 +1,6 @@
 ﻿namespace eShop.Data.Context;
 
-public class EShopContext (DbContextOptions<EShopContext> builder) : DbContext(builder) //ett modernt sätt att använda en konstruktor(ctor)
+public class EShopContext (DbContextOptions<EShopContext> options) : DbContext(options) //ett modernt sätt att använda en konstruktor(ctor)
                                                                                         //genom "use primary constructor". Den skickar
                                                                                         //builder till DbContext så den kan hantera och
                                                                                         //använda konfigurationen som EntityFramWork behöver.

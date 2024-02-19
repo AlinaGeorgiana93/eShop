@@ -1,5 +1,6 @@
-﻿using AutoMapper;
-using eShop.Data.Context;
+﻿
+using eShop.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace eShop.Data.Services;
 
@@ -8,11 +9,11 @@ public class CategoryDbService(EShopContext db, IMapper mapper) : DbService(db, 
 {
     public override async Task<List<TDto>> GetAsync<TEntity, TDto>() //override körs så vi hamnar i denna metod.
     {   
-        IncludeNavigationsFor<Filter>();   //Dessa ska inkludera kopplingsdata.(Går från Category-CategoryProducts-Products och hämtar produkterna)
+       //IncludeNavigationsFor<Filter>();   //Dessa ska inkludera kopplingsdata.(Går från Category-CategoryProducts-Products och hämtar produkterna)
                                            //tanken är att i en DTO kunde vi ha en lista vi kunde fylla med filter, eller om vi hämtar en categori
                                            //så vill vi hämta alla produkter med den kategorin. 
 
-        IncludeNavigationsFor<Product>();// Dessa metod talar om vilka relaterade entiteter vi vill laddda. Filter och produkter samtidigt t ex.
+        //IncludeNavigationsFor<Product>();// Dessa metod talar om vilka relaterade entiteter vi vill laddda. Filter och produkter samtidigt t ex.
         return await base.GetAsync<TEntity, TDto>(); //base är nyckelord för att anropa funktionallitet i basklassen DbS
     }
 

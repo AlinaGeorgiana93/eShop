@@ -11,7 +11,7 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20240131192815_Initial")]
+    [Migration("20240207205524_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

@@ -1,10 +1,6 @@
-using eShop.Data.Context;
-using eShop.Data.Services;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using eShop.Data.Entities;
+
 using eShop.API.DTO.DTOs;
-using eShop.API.Extensions.Extensions;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddDbContext<EShopContext>(
     options =>
@@ -27,9 +24,12 @@ builder.Services.AddCors(policy =>
            .AllowAnyMethod()
     );
 });
+
+
 RegisterServices((builder.Services));
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,17 +40,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
 RegisterEndpoints();
 
 
-app.UseCors("Policy");
+app.UseCors("CorsAllAccessPolicy");
+
 app.Run();
-void RegisterServices(IServiceCollection services)
-{
-    ConfigureAutoMapper();
-    services.AddScoped<IDbService, ProductDbService>();
-}
+
 void RegisterEndpoints()
 {
     app.AddEndpoint<Product, ProductPostDTO, ProductPutDTO, ProductGetDTO>();
@@ -61,12 +57,13 @@ void RegisterEndpoints()
     app.AddEndpoint<ProductSize, ProductSizeDTO>();
     app.AddEndpoint<ProductColor,  ProductColorDTO>();
 
-    /*app.MapGet($"/api/productsbycategory/" + "{categoryId}", async (IDbService db, int categoryId) =>
-
+    app.MapGet($"/api/productsbycategory/" + "{{categoryId}}", async (IDbService db, int categoryId) => //Vi lägger till en extra nod för att kunna hämta från categoryId. Dom övre sökvägarna AddEndpoint hämtar bara i form av lista, dom tar inte emot id. 
+                                        
     {
         try
         {
-            return Results.Ok(await ((ProductDbService)db).GetProductsByCategoryAsync(categoryId));
+            var result = await ((ProductDbService)db).GetProductsByCategoryAsync(categoryId);
+            return Results.Ok(result);  //TypeCasting, vi tar IDbService och säger jag vill komma åt och göra om så jag kommer åt saker i ProductDbService. Vi castar den. Metoden GetProductsByCategoryAsync hämtar produkter via categoryId. 
         }
         catch
         {
@@ -75,9 +72,11 @@ void RegisterEndpoints()
         return Results.BadRequest($"Couldn't get the requested products of type {typeof(Product).Name}.");
     
     });
-    */
-    
-   
+}
+void RegisterServices(IServiceCollection services)
+{
+    ConfigureAutoMapper();
+    services.AddScoped<IDbService, ProductDbService>();
 }
 
 void ConfigureAutoMapper()
@@ -87,12 +86,15 @@ void ConfigureAutoMapper()
         cfg.CreateMap<Product, ProductPostDTO>().ReverseMap();
         cfg.CreateMap<Product, ProductPutDTO>().ReverseMap();
         cfg.CreateMap<Product, ProductGetDTO>().ReverseMap();
+
         cfg.CreateMap<Size, SizePostDTO>().ReverseMap();
         cfg.CreateMap<Size, SizePutDTO>().ReverseMap();
         cfg.CreateMap<Size, SizeGetDTO>().ReverseMap();
+
         cfg.CreateMap<Color, ColorPostDTO>().ReverseMap();
         cfg.CreateMap<Color, ColorPutDTO>().ReverseMap();
         cfg.CreateMap<Color, ColorGetDTO>().ReverseMap();
+
         cfg.CreateMap<ProductCategory, ProductCategoryDTO>().ReverseMap();
         cfg.CreateMap<ProductSize, ProductSizeDTO>().ReverseMap();
         cfg.CreateMap<ProductColor, ProductColorDTO>().ReverseMap();

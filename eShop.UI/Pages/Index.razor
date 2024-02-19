@@ -1,45 +1,39 @@
 ﻿@page "/"
 
-<NavComponent /> <!--går in och läser html från NavComponent.-->
+@inject UIService Service 
+@* inject talar om att vi ska kunna initiera den som en konstruktor,
+fast vi vill få in den i vår Razorsida istället.(Se det Som en
+konstruktorinjektion inne i razorsidan där vi vill få tillgång till en UIService) *@
 
-@*<MenuComponent /> 
+<NavComponent /> 
+@*går in och läser html från NavComponent
+<MenuComponent />
 <CarouselComponent />
-<CardListComponent />*@
+<CardListComponent /> *@
 
-<div id="viewpoint" class="d-flex vh-100">
-    <AsideComponent/>
+
+@* <div id="viewpoint" class="d-flex vh-100">
+    <AsideComponent OnChange="OnChange"/>
     <ProductComponent />
+</div> *@
+
+<div id="viewport" class="d-flex vh-100">    
+    <CascadingValue Value="Service" Name="Service">  @*CascadingValue ska kunna skicka in våran Service via parametern till Aside "Service". Så vi kan få en tvåvägskommunikation när vi använder Service och förändrar något data i den, Kommer datat kunna användas och uppdatera data på vår huvudsida. *@
+        <AsideComponent OnChange="OnChange" />
+        <ProductMainComponent OnChange="OnChange" />
+    </CascadingValue>
 </div>
 
-<!--
-<header class="d-flex justify-content-between m-3">
-    <div><img src="Images/logo.png" alt=" logo" /></div>
-    <div class="input-group flex-nowrap search-width">
-        <input type="text" class="form-control rounded-0" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-        <span class="input-group-text rounded-0" id="addon-wrapping"><i class="bi bi-search"></i></span>
-    </div>
-    <div class="d-flex justify-content-between ">
-        <div class="dropdown">
-            <button class=" rounded-0 btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-lock"></i> Account
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-        </div>
-        <div>
-            <div class="position-relative">
-                <button id="cart-button" type="button" class="btn btn-outline-success rounded-0"><i class="bi bi-cart"></i></button>
-                <div class="cart-count bg-danger text-white rounded-circle position-absolute">3</div>
-            </div>
-            <div></div>
-        </div>
-    </div>
-   
-</header>
+@code{
+    void OnChange() //den här kan vara tom eftersom vi vill enbart trigga igång OnChange för en uppdatering av html sidan.  
+    {
+            
+    }
+}
 
+
+
+<!--
 -----------------------------------------------------------------------------------------------------------
 
     - Olika styrkor:
