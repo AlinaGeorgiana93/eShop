@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eShop.Data.Context;
 
@@ -10,9 +11,21 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    partial class EShopContextModelSnapshot : ModelSnapshot
+<<<<<<<< HEAD:eShop.Data/Migrations/20240207205524_Initial.Designer.cs
+    [Migration("20240207205524_Initial")]
+    partial class Initial
+========
+
+    [Migration("20240124221656_Initial")]
+    partial class Initial;
+
+    [Migration("20240129100417_initial")]
+    partial class initial
+
+>>>>>>>> 0ec24dafe3665a30856a5ba7c860b4ee6671a0cc:eShop.Data/Migrations/20240129100417_initial.Designer.cs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +46,7 @@ namespace eShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OptionType")
+                    b.Property<int?>("OptionType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -64,11 +77,19 @@ namespace eShop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BkColorHex")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ColorHex")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ColorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OptionType")
+                    b.Property<int?>("OptionType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -108,8 +129,9 @@ namespace eShop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<string>("PictureUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -173,7 +195,7 @@ namespace eShop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("OptionType")
+                    b.Property<int?>("OptionType")
                         .HasColumnType("int");
 
                     b.Property<string>("SizeName")
