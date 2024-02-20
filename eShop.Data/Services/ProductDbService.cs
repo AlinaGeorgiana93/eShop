@@ -2,12 +2,17 @@
 using eShop.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using eShop.API.DTO.DTOs;
+using AutoMapper;
 
 
 namespace eShop.Data.Services;
 
-public class ProductDbService(EShopContext db, IMapper mapper) : DbService(db, mapper)
+public class ProductDbService : DbService
 {
+    public ProductDbService(EShopContext db, IMapper mapper) : base(db, mapper)
+    {
+        
+    }
     public async Task<List<ProductGetDTO>> GetProductsByCategoryAsync(int categoryId)
     {
         IncludeNavigationsFor<Color>(); //inkluderar färger och storlekar från tabellerna

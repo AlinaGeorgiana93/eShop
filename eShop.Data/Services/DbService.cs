@@ -10,7 +10,7 @@ public class DbService : IDbService //den här klassen ska implementera interfac
                                     //DbSercive är basklassen vi skapat med grundfunktionallitet för t ex "GetAsync".
 {
     private readonly EShopContext _db;
-    private readonly IMapper _mapper;
+    public readonly IMapper _mapper;
 
     public DbService(EShopContext db, IMapper mapper) //Hoppar in här från CDbS och kör metoden nedan
     {
